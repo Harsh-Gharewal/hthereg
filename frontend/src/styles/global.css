@@ -1,0 +1,176 @@
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Bonsai Design Tokens ─────────────────────────────────────────────────── */
+:root {
+  --bg-page:       #ffffff;
+  --bg-surface:    #f8fafc;
+  --bg-card:       #ffffff;
+  --bg-hover:      #f1f5f9;
+  --bg-input:      #ffffff;
+  --border:        #e2e8f0;
+  --border-light:  #f1f5f9;
+  --border-focus:  #10b981;
+  --accent:        #10b981;              /* Bonsai Emerald */
+  --accent-dim:    rgba(16, 185, 129, 0.10);
+  --accent-dark:   #059669;
+  --dark-pill:     #0f172a;              /* Solid Black Pill */
+  --dark-hover:    #1e293b;
+  --good:          #10b981;
+  --warn:          #f59e0b;
+  --danger:        #ef4444;
+  --neutral:       #0ea5e9;
+  --text-primary:  #0f172a;              /* Slate 900 */
+  --text-secondary:#475569;              /* Slate 600 */
+  --text-muted:    #64748b;              /* Slate 500 */
+  --font-sans:     'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:     'JetBrains Mono', 'Fira Code', monospace;
+  --radius-sm:     6px;
+  --radius:        10px;
+  --radius-lg:     14px;
+  --radius-pill:   9999px;
+  --shadow-sm:     0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow:        0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-lg:     0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --transition:    150ms ease;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg-page); }
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ─── Typography helpers ─────────────────────────────────────────────────── */
+.mono { font-family: var(--font-mono); }
+.text-muted { color: var(--text-muted); }
+.text-secondary { color: var(--text-secondary); }
+.text-good { color: var(--good); }
+.text-warn { color: var(--warn); }
+.text-danger { color: var(--danger); }
+.text-accent { color: var(--accent); }
+
+/* ─── Card ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* ─── Skeleton shimmer ───────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius);
+}
+
+/* ─── Fade-in card animation ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.25s ease both; }
+
+/* ─── Layout helpers ─────────────────────────────────────────────────────── */
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+}
+
+.section-gap { margin-top: 24px; }
+
+/* ─── Select / input base ────────────────────────────────────────────────── */
+select, input {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+select:hover, input:hover { border-color: #cbd5e1; }
+select:focus, input:focus  {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+select option { background: #ffffff; color: var(--text-primary); }
+
+/* ─── Bonsai Pill Buttons ─────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.btn-pill-dark {
+  background: var(--dark-pill);
+  color: #ffffff;
+  border: 1px solid var(--dark-pill);
+}
+.btn-pill-dark:hover {
+  background: var(--dark-hover);
+  border-color: var(--dark-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.btn-pill-outline {
+  background: #ffffff;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btn-pill-outline:hover {
+  background: var(--bg-hover);
+  border-color: #cbd5e1;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+.btn-accent:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .container { padding: 0 16px; }
+}

@@ -33,6 +33,7 @@ class DataStore:
         self._actuals_cache: pd.DataFrame | None = None
         self._forecasts_cache: pd.DataFrame | None = None
         self._band_map_cache: dict[int, tuple[float, float]] | None = None
+        self._range_cache: dict[tuple[str, str, str], pd.DataFrame] = {}
 
     def has_snapshot(self) -> bool:
         """Check if snapshot data is present on disk or in memory cache."""
@@ -139,6 +140,9 @@ class DataStore:
         """Resolve all days in the specified range and concatenate resolved period records."""
         from_d = from_date_str or JANUARY_2026_START_DELIVERY
         to_d = to_date_str or JANUARY_2026_END_DELIVERY
+        cache_key = (from_d, to_d, cutoff_time_str)
+        if cache_key in self._range_cache:
+            return self._range_cache[cache_key]
 
         start = datetime.strptime(from_d, "%Y-%m-%d").date()
         end = datetime.strptime(to_d, "%Y-%m-%d").date()
@@ -175,7 +179,9 @@ class DataStore:
                 )
             curr += timedelta(days=1)
 
-        return pd.DataFrame(rows)
+        result_df = pd.DataFrame(rows)
+        self._range_cache[cache_key] = result_df
+        return result_df
 
     def get_historical_band_map(self) -> dict[int, tuple[float, float]]:
         """Compute or retrieve cached historical P10/P90 error band map by horizon."""
