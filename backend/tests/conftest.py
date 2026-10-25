@@ -1,9 +1,18 @@
-"""Pytest configuration and shared fixtures for unit and integration tests."""
-
+from collections.abc import Generator
 from datetime import UTC, datetime, timedelta
 
 import pandas as pd
 import pytest
+from fastapi.testclient import TestClient
+
+from backend.app.main import app
+
+
+@pytest.fixture
+def client() -> Generator[TestClient, None, None]:
+    """TestClient fixture with app lifespan context."""
+    with TestClient(app) as test_client:
+        yield test_client
 
 
 @pytest.fixture

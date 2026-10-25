@@ -35,7 +35,9 @@ class DataStore:
         self._band_map_cache: dict[int, tuple[float, float]] | None = None
 
     def has_snapshot(self) -> bool:
-        """Check if snapshot data is present on disk."""
+        """Check if snapshot data is present on disk or in memory cache."""
+        if self._actuals_cache is not None and not self._actuals_cache.empty:
+            return True
         has_parquet = os.path.exists(self.actuals_path) and os.path.exists(self.forecasts_path)
         has_sqlite = os.path.exists(self.db_path)
         return has_parquet or has_sqlite
