@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.routers import accuracy, export, forecast, health
+from backend.app.routers import accuracy, cashflow, export, forecast, health
 from backend.app.services.data_store import data_store
 
 
@@ -49,6 +49,7 @@ def create_app() -> FastAPI:
     app.include_router(health.router, prefix="/api")
     app.include_router(forecast.router, prefix="/api")
     app.include_router(accuracy.router, prefix="/api")
+    app.include_router(cashflow.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
 
     return app
