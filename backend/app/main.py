@@ -52,6 +52,23 @@ def create_app() -> FastAPI:
     app.include_router(cashflow.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
 
+    # Serve built frontend SPA if available (for unified single-service deployment)
+    from pathlib import Path
+    dist_dir = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+    if dist_dir.is_dir():
+        from fastapi.responses import FileResponse
+        from fastapi.staticfiles import StaticFiles
+
+        if (dist_dir / "assets").is_dir():
+            app.mount("/assets", StaticFiles(directory=dist_dir / "assets"), name="assets")
+
+        @app.get("/{full_path:path}", include_in_schema=False)
+        async def serve_spa(full_path: str):
+            file_path = dist_dir / full_path
+            if file_path.is_file():
+                return FileResponse(file_path)
+            return FileResponse(dist_dir / "index.html")
+
     return app
 
 

@@ -57,6 +57,14 @@ d:\REint\
 
 ---
 
+## 🤖 AI Tool Disclosure (PRD Section 7 Compliance)
+
+In accordance with the assignment requirements, the following AI tools were utilized during development:
+- **Google Stitch**: Used at design-time to conceptualize UI layouts, extract modern SaaS design tokens, and generate reference screen mockups (`design/prompts/` and `design/stitch/`).
+- **AI Coding Assistant**: Used for pair-programming, writing test fixtures, and accelerating boilerplate scaffolding across FastAPI and React. All architecture, domain resolver logic, Elexon BMRS ingestion, and financial metrics were strictly verified against official Elexon BSC specifications.
+
+---
+
 ## 🚀 Quick Start (Local Development)
 
 ### 1. Prerequisites

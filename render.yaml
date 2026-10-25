@@ -1,0 +1,12 @@
+services:
+  # Option A: Unified Web Service (serves both React Bonsai UI & FastAPI endpoints)
+  - type: web
+    name: gb-wind-forecast-desk
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: npm --prefix frontend install && npm --prefix frontend run build && pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
