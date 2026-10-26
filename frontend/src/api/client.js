@@ -5,17 +5,29 @@
 
 const BASE = import.meta.env.VITE_API_BASE ?? '';
 
-async function apiFetch(path) {
-  const res = await fetch(`${BASE}${path}`);
-  if (!res.ok) {
-    let detail = `HTTP ${res.status}`;
-    try { detail = (await res.json()).detail ?? detail; } catch {}
-    const err = new Error(detail);
-    err.status = res.status;
-    err.detail = detail;
+async function apiFetch(path, retries = 1) {
+  try {
+    const res = await fetch(`${BASE}${path}`);
+    if (!res.ok) {
+      if (retries > 0 && res.status >= 500) {
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+        return apiFetch(path, retries - 1);
+      }
+      let detail = `HTTP ${res.status}`;
+      try { detail = (await res.json()).detail ?? detail; } catch {}
+      const err = new Error(detail);
+      err.status = res.status;
+      err.detail = detail;
+      throw err;
+    }
+    return res.json();
+  } catch (err) {
+    if (retries > 0 && !err.status) {
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+      return apiFetch(path, retries - 1);
+    }
     throw err;
   }
-  return res.json();
 }
 
 /** GET /api/health */

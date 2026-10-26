@@ -14,10 +14,9 @@ from backend.app.services.data_store import data_store
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Lifespan event handler for warm startup caching."""
     if data_store.has_snapshot():
-        # Warm caches in memory so the first user query is instant
+        # Warm core datasets in memory so the first user query is instant without blocking cold starts
         data_store.get_actuals()
         data_store.get_forecasts()
-        data_store.get_historical_band_map()
     yield
 
 
