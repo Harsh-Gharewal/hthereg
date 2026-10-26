@@ -16,13 +16,8 @@ export function ForecastView() {
 
   return (
     <div className="fade-up">
-      {/* ─── Bonsai Hero Section (Reference 1) ────────────────────────── */}
+      {/* ─── Hero Section ────────────────────────── */}
       <section className={chartStyles.heroSection}>
-        <div className={chartStyles.heroTag}>
-          <span className={chartStyles.heroTagDot} />
-          <span>In partnership with Elexon BMRS</span>
-        </div>
-
         <h1 className={chartStyles.heroTitle}>
           The forecast evaluation platform for power trading desks
         </h1>
@@ -94,9 +89,9 @@ export function ForecastView() {
       {/* ─── Main Chart Card ─────────────────────────────────────────── */}
       {!loading && !error && data && <ForecastChart data={data} />}
 
-      {/* ─── Bonsai 2-Column Methodology Section (Reference 3) ──────── */}
+      {/* ─── 2-Column Methodology Section ──────── */}
       <section className={chartStyles.bonsaiSection}>
-        <h2 className={chartStyles.bonsaiSectionTitle}>Bonsai precision for energy trading desks</h2>
+        <h2 className={chartStyles.bonsaiSectionTitle}>Precision for energy trading desks</h2>
         <p className={chartStyles.bonsaiSectionSubtitle}>Streamlined intelligence to minimize balancing mechanism charges and optimize physical dispatch.</p>
 
         <div className={chartStyles.bonsaiGrid}>
