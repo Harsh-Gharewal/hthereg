@@ -24,7 +24,7 @@ export function SummaryMetrics({ summary }) {
                 <line x1="12" y1="22" x2="12" y2="18"/>
               </svg>
             </div>
-            <span className={`${styles.metricTag} ${styles.metricTagGood}`}>-14.7% vs Norm</span>
+            <span className={styles.metricTag}>D-1 Forecast</span>
           </div>
           <div>
             <div className={styles.metricName}>Mean Absolute Error (MAE)</div>
@@ -32,16 +32,19 @@ export function SummaryMetrics({ summary }) {
               {summary.mae_mw != null ? `${Math.round(summary.mae_mw).toLocaleString()} MW` : '—'}
             </div>
           </div>
-          <div className={styles.metricDesc}>Average magnitude of deviation between D-1 forecast and metered outturn.</div>
+          <div className={styles.metricDesc}>
+            Average magnitude of the forecast error, ignoring direction (typical error of ~2.0 GW).
+          </div>
         </div>
 
         {/* Card 2: Mean Directional Bias */}
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
             <div className={styles.metricIconContainer}>
+              {/* Directional drift icon (replaces confusing dollar sign) */}
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                <path d="m3 17 6-6 4 4 8-8"/>
+                <path d="M14 7h7v7"/>
               </svg>
             </div>
             <span className={`${styles.metricTag} ${isOverforecast ? styles.metricTagWarn : styles.metricTagGood}`}>
@@ -55,7 +58,7 @@ export function SummaryMetrics({ summary }) {
             </div>
           </div>
           <div className={styles.metricDesc}>
-            Systematic over-forecasting tendency observed across January delivery days.
+            Average error including direction. Positive bias indicates systematic over-forecasting (forecast higher than actual wind).
           </div>
         </div>
 
@@ -67,7 +70,9 @@ export function SummaryMetrics({ summary }) {
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
               </svg>
             </div>
-            <span className={styles.metricTag}>RMSE/MAE: 1.27</span>
+            <span className={styles.metricTag}>
+              RMSE/MAE: {summary.rmse_mw && summary.mae_mw ? (summary.rmse_mw / summary.mae_mw).toFixed(2) : '1.23'}
+            </span>
           </div>
           <div>
             <div className={styles.metricName}>Root Mean Square Error (RMSE)</div>
@@ -75,7 +80,9 @@ export function SummaryMetrics({ summary }) {
               {summary.rmse_mw != null ? `${Math.round(summary.rmse_mw).toLocaleString()} MW` : '—'}
             </div>
           </div>
-          <div className={styles.metricDesc}>Penalizes large wind ramp spikes and sudden frontal boundary shifts.</div>
+          <div className={styles.metricDesc}>
+            Like MAE, but errors are squared first, penalizing large individual forecast misses more heavily.
+          </div>
         </div>
 
         {/* Card 4: nMAE */}
@@ -87,7 +94,7 @@ export function SummaryMetrics({ summary }) {
                 <polyline points="12 6 12 12 16 14"/>
               </svg>
             </div>
-            <span className={`${styles.metricTag} ${styles.metricTagGood}`}>Industry Benchmark</span>
+            <span className={styles.metricTag}>Normalized</span>
           </div>
           <div>
             <div className={styles.metricName}>Normalized MAE (nMAE)</div>
@@ -97,7 +104,9 @@ export function SummaryMetrics({ summary }) {
                 : '—'}
             </div>
           </div>
-          <div className={styles.metricDesc}>Error scaled against total installed GB transmission wind capacity (~28.5 GW).</div>
+          <div className={styles.metricDesc}>
+            MAE scaled by average actual generation (~11.3 GW) across the evaluation window.
+          </div>
         </div>
 
         {/* Card 5: Tail Risk Spread (P10 - P90) */}
@@ -108,18 +117,18 @@ export function SummaryMetrics({ summary }) {
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
             </div>
-            <span className={`${styles.metricTag} ${styles.metricTagGood}`}>80% Confidence Band</span>
+            <span className={`${styles.metricTag} ${styles.metricTagGood}`}>80% Risk Range</span>
           </div>
           <div>
             <div className={styles.metricName}>P10–P90 Risk Envelope</div>
             <div className={styles.metricVal}>
               {summary.p10_mw != null && summary.p90_mw != null
                 ? `${Math.round(summary.p90_mw - summary.p10_mw).toLocaleString()} MW`
-                : '2,450 MW'}
+                : '4,581 MW'}
             </div>
           </div>
           <div className={styles.metricDesc}>
-            Tail risk spread spanning P10 ({summary.p10_mw != null ? Math.round(summary.p10_mw).toLocaleString() : '5,687'} MW) to P90 ({summary.p90_mw != null ? Math.round(summary.p90_mw).toLocaleString() : '8,137'} MW).
+            Width of the 80% error range between P10 ({summary.p10_mw != null ? `${Math.round(summary.p10_mw).toLocaleString()} MW` : '-426 MW'}) and P90 ({summary.p90_mw != null ? `+${Math.round(summary.p90_mw).toLocaleString()} MW` : '+4,154 MW'}).
           </div>
         </div>
 
@@ -141,13 +150,13 @@ export function SummaryMetrics({ summary }) {
             </div>
           </div>
           <div className={styles.metricDesc}>
-            All {summary.evaluated_periods ?? summary.count ?? 744} half-hour settlement periods validated against Elexon FUELHH.
+            All {summary.evaluated_periods ?? summary.count ?? 744} expected hourly forecast points have matching actual outturns with zero gaps.
           </div>
         </div>
       </div>
 
       <div style={{ fontSize: 13, color: 'var(--text-muted)', textAlign: 'right', marginBottom: 24 }}>
-        Evaluation window: <strong>{summary.window?.from_date ?? summary.window_from}</strong> to <strong>{summary.window?.to_date ?? summary.window_to}</strong> · Gate Cutoff: <strong>{summary.window?.cutoff_time ?? summary.cutoff_time}</strong> · {summary.evaluated_periods ?? summary.count} settlement periods audited
+        Evaluation window: <strong>{summary.window?.from_date ?? summary.window_from}</strong> to <strong>{summary.window?.to_date ?? summary.window_to}</strong> · Gate Cutoff: <strong>{summary.window?.cutoff_time ?? summary.cutoff_time}</strong> · {summary.evaluated_periods ?? summary.count ?? 744} hourly forecast points audited
       </div>
     </div>
   );

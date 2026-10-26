@@ -28,7 +28,7 @@ export function SummaryView() {
         </h1>
 
         <p className={chartStyles.heroSubtitle}>
-          Evaluate mean absolute error (MAE), directional bias, and diurnal settlement period variance across all 744 settlement periods of January 2026.
+          Evaluate mean absolute error (MAE), directional bias, and diurnal settlement period variance across all 744 hourly forecast points of January 2026.
         </p>
 
         <div className={chartStyles.heroActions}>
@@ -54,7 +54,7 @@ export function SummaryView() {
 
         <div className={chartStyles.heroTrust}>
           <span className={chartStyles.stars}>★★★★★</span>
-          <span><strong>744 Settlement Periods Audited</strong> · 0 Data Gaps (Elexon Reconciled)</span>
+          <span><strong>744 Hourly Forecast Points Audited</strong> · Zero Data Gaps</span>
         </div>
       </section>
 

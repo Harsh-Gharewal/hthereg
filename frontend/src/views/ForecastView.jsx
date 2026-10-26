@@ -54,7 +54,7 @@ export function ForecastView() {
 
         <div className={chartStyles.heroTrust}>
           <span className={chartStyles.stars}>★★★★★</span>
-          <span><strong>744 Settlement Periods Verified</strong> · Zero Data Gaps</span>
+          <span><strong>744 Hourly Forecast Points Verified</strong> · Zero Data Gaps</span>
         </div>
       </section>
 
@@ -147,7 +147,7 @@ export function ForecastView() {
             </div>
 
             <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 16 }}>
-              Across 744 settlement periods, wind generation exhibited systematic over-forecasting during morning ramp-up hours (SP 13–18).
+              Across 744 hourly forecast points, wind generation exhibited systematic over-forecasting during morning ramp-up hours (SP 13–18).
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
