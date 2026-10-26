@@ -36,7 +36,7 @@ SQLITE_DB_PATH = DATA_DIR / "bmrs.db"
 
 
 class Settings(BaseModel):
-    app_name: str = "UK Day-Ahead Wind Forecast Desk"
+    app_name: str = "WindWise — UK Day-Ahead Wind Forecast Desk"
     default_cutoff: str = DEFAULT_CUTOFF_TIME
     data_dir: Path = DATA_DIR
     actuals_file: Path = ACTUALS_PARQUET

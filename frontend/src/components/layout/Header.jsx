@@ -30,10 +30,9 @@ export function Header() {
         </div>
         <div className={styles.titleGroup}>
           <div className={styles.title}>
-            <span>GB Wind Forecast</span>
-            <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>by zoom</span>
+            <span>WindWise</span>
           </div>
-          <span className={styles.subtitle}>National Grid ESO / Elexon BMRS Intelligence</span>
+          <span className={styles.subtitle}>GB Wind Forecast & Trading Intelligence</span>
         </div>
       </div>
 

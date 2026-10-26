@@ -1,4 +1,4 @@
-# GB Wind Power Forecast Evaluation Desk
+# WindWise — GB Wind Power Forecast Evaluation Desk
 
 An enterprise-grade forecasting and decision-time accuracy platform engineered for Great Britain wholesale day-ahead power trading desks.
 

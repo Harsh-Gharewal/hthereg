@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
     app = FastAPI(
-        title="GB Wind Power Forecast Evaluation Service",
+        title="WindWise — GB Wind Power Forecast Evaluation Service",
         description=(
             "Decision-time wind power forecast resolution and accuracy evaluation service "
             "for Great Britain settlement periods (Elexon BMRS data)."
