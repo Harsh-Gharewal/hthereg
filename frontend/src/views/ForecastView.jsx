@@ -14,6 +14,19 @@ export function ForecastView() {
 
   const { data, loading, error, refetch } = useForecast(date, cutoff);
 
+  const handleViewTomorrow = () => {
+    setDate('2026-02-01');
+    setCutoff('09:00');
+    const scroll = () => {
+      const el = document.getElementById('forecast-chart-card') || document.getElementById('forecast-control-card');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    scroll();
+    setTimeout(scroll, 120);
+  };
+
   return (
     <div className="fade-up">
       {/* ─── Hero Section ────────────────────────── */}
@@ -28,11 +41,9 @@ export function ForecastView() {
 
         <div className={chartStyles.heroActions}>
           <button
-            onClick={() => {
-              setDate('2026-02-01');
-              setCutoff('09:00');
-            }}
+            onClick={handleViewTomorrow}
             className="btn btn-pill-dark"
+            title="Jump to latest Day-Ahead delivery forecast"
           >
             <span>View Tomorrow's Forecast</span>
             <span>→</span>
@@ -59,7 +70,7 @@ export function ForecastView() {
       </section>
 
       {/* ─── Control Strip ───────────────────────────────────────────── */}
-      <div className={controlStyles.controlCard}>
+      <div id="forecast-control-card" className={controlStyles.controlCard}>
         <div className={controlStyles.controlRow}>
           <DatePicker value={date} onChange={setDate} />
           <CutoffSlider value={cutoff} onChange={setCutoff} />

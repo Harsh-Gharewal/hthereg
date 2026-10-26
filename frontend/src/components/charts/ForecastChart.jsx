@@ -79,15 +79,17 @@ export function ForecastChart({ data }) {
         : null,
   }));
 
-  const { summary } = data;
+  const evaluatedCount = data.periods?.filter((p) => p.forecast_mw != null).length ?? 0;
+  const biasVal = data.mean_error_mw != null ? Math.round(data.mean_error_mw) : null;
+  const biasSign = biasVal != null && biasVal > 0 ? '+' : '';
 
   return (
-    <div className={styles.chartCard}>
+    <div id="forecast-chart-card" className={styles.chartCard}>
       <div className={styles.cardHeader}>
         <div>
           <h2 className={styles.chartTitle}>Wind Generation & Forecast Profile</h2>
           <span className={styles.chartSubtitle}>
-            Delivery Date: {data.delivery_date} · Cutoff: {data.cutoff_time} UK · {summary?.evaluated_periods ?? 0} evaluated periods
+            Delivery Date: {data.delivery_date} · Cutoff: {data.cutoff_time} UK · {evaluatedCount} evaluated forecast periods
           </span>
         </div>
       </div>
@@ -153,37 +155,35 @@ export function ForecastChart({ data }) {
         </ResponsiveContainer>
       </div>
 
-      {summary && (
-        <div className={styles.kpiBar}>
-          <div className={styles.kpiPill}>
-            <span className={styles.kpiLabel}>Peak Forecast</span>
-            <span className={styles.kpiValue}>
-              {summary.peak_forecast_mw != null ? `${Math.round(summary.peak_forecast_mw).toLocaleString()} MW` : '—'}
-            </span>
-          </div>
-          <div className={styles.kpiPill}>
-            <span className={styles.kpiLabel}>Average Forecast</span>
-            <span className={styles.kpiValue}>
-              {summary.avg_forecast_mw != null ? `${Math.round(summary.avg_forecast_mw).toLocaleString()} MW` : '—'}
-            </span>
-          </div>
-          <div className={styles.kpiPill}>
-            <span className={styles.kpiLabel}>Day MAE</span>
-            <span className={styles.kpiValue} style={{ color: 'var(--accent)' }}>
-              {summary.mae_mw != null ? `${Math.round(summary.mae_mw).toLocaleString()} MW` : '—'}
-            </span>
-          </div>
-          <div className={styles.kpiPill}>
-            <span className={styles.kpiLabel}>Mean Bias</span>
-            <span
-              className={styles.kpiValue}
-              style={{ color: summary.mean_bias_mw > 0 ? 'var(--danger)' : 'var(--warn)' }}
-            >
-              {summary.mean_bias_mw != null ? `${summary.mean_bias_mw > 0 ? '+' : ''}${Math.round(summary.mean_bias_mw).toLocaleString()} MW` : '—'}
-            </span>
-          </div>
+      <div className={styles.kpiBar}>
+        <div className={styles.kpiPill}>
+          <span className={styles.kpiLabel}>Peak Forecast</span>
+          <span className={styles.kpiValue}>
+            {data.peak_forecast_mw != null ? `${Math.round(data.peak_forecast_mw).toLocaleString()} MW` : '—'}
+          </span>
         </div>
-      )}
+        <div className={styles.kpiPill}>
+          <span className={styles.kpiLabel}>Average Forecast</span>
+          <span className={styles.kpiValue}>
+            {data.avg_forecast_mw != null ? `${Math.round(data.avg_forecast_mw).toLocaleString()} MW` : '—'}
+          </span>
+        </div>
+        <div className={styles.kpiPill}>
+          <span className={styles.kpiLabel}>Day MAE</span>
+          <span className={styles.kpiValue} style={{ color: 'var(--accent)' }}>
+            {data.mae_mw != null ? `${Math.round(data.mae_mw).toLocaleString()} MW` : '—'}
+          </span>
+        </div>
+        <div className={styles.kpiPill}>
+          <span className={styles.kpiLabel}>Mean Bias</span>
+          <span
+            className={styles.kpiValue}
+            style={{ color: biasVal != null && biasVal > 0 ? '#b45309' : 'var(--accent)' }}
+          >
+            {biasVal != null ? `${biasSign}${biasVal.toLocaleString()} MW` : '—'}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
